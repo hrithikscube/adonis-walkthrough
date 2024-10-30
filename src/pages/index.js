@@ -1,11 +1,12 @@
 import Input from '@/components/Input'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
+import axiosInstance from './utils/axios'
 
 const Home = () => {
 
   const [params, setParams] = useState({
-    username: '',
+    email: '',
     password: ''
   })
 
@@ -20,22 +21,39 @@ const Home = () => {
   const Router = useRouter()
 
   const handleSubmit = () => {
-    // validate and make api call
-    Router.push('/home')
+    if (params.name !== '' && params.password !== '') {
+      axiosInstance.post('/login', params)
+        .then((response) => {
+          let data = response.data
+          localStorage.setItem('auth_details', JSON.stringify(data))
+          Router.push('/home')
+          setParams({
+            email: '',
+            password: ''
+          })
+        })
+        .catch((error) => {
+          console.log(error)
+          // alert('Something went wrong')
+        })
+    }
+    else {
+      alert('Enter valid credentials')
+    }
   }
 
   return (
-    <div className='w-full h-screen flex flex-col items-center justify-center bg-[#f2f2f2]'>
+    <div className='w-full h-screen flex flex-col items-center justify-center bg-[#f2f2f2] md:px-0 px-4'>
 
-      <div className='w-96 mx-auto flex flex-col gap-3 bg-white lg:p-6 p-4 shadow rounded-xl border border-[#808080]/20'>
+      <div className='w-full md:w-96 mx-auto flex flex-col gap-3 bg-white lg:p-6 p-4 shadow rounded-xl border border-[#808080]/20'>
 
         <p className='lg:text-lg text-base font-semibold text-[#121212]'>Login</p>
 
         <Input
-          name="username"
-          value={params.username}
+          name="email"
+          value={params.email}
           handleChange={handleChange}
-          label='Enter Username'
+          label='Enter Email'
         />
 
         <Input
