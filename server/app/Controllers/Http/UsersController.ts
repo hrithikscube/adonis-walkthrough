@@ -1,5 +1,6 @@
 import User from 'App/Models/User';
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
+const Validator = require('validatorjs')
 
 export default class UsersController {
 
@@ -18,6 +19,17 @@ export default class UsersController {
     public async store({ request, response }: HttpContextContract) {
         try {
             let payload = request.only(['email', 'password'])
+
+            const rules: any = {
+                email: 'required|email|max:255',
+                password: 'required'
+            }
+
+            const validation = new Validator(payload, rules)
+            if (validation.fails()) {
+                return response.badRequest(validation.errors.errors)
+            }
+
             let user = new User()
             user.email = payload.email
             user.password = payload.password
