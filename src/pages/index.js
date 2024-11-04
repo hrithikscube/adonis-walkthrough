@@ -45,7 +45,7 @@ const Home = () => {
   return (
     <div className='w-full h-screen flex flex-col items-center justify-center bg-[#f2f2f2] md:px-0 px-4'>
 
-      <div className='w-full md:w-96 mx-auto flex flex-col gap-3 bg-white lg:p-6 p-4 shadow rounded-xl border border-[#808080]/20'>
+      <div className='w-full md:w-96 mx-auto flex flex-col gap-3 bg-white lg:p-6 p-4 shadow'>
 
         <p className='lg:text-lg text-base font-semibold text-[#121212]'>Login</p>
 
